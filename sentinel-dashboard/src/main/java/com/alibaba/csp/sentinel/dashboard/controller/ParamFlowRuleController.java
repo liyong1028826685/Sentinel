@@ -25,6 +25,7 @@ import com.alibaba.csp.sentinel.dashboard.client.CommandNotFoundException;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
+import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.util.StringUtil;
 
@@ -36,6 +37,7 @@ import com.alibaba.csp.sentinel.dashboard.util.VersionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +64,11 @@ public class ParamFlowRuleController {
     private AppManagement appManagement;
     @Autowired
     private RuleRepository<ParamFlowRuleEntity, Long> repository;
+
+    @Autowired
+//    @Qualifier("paramFlowRuleZKPublisher")
+    @Qualifier("paramFlowRuleNacosPublisher")
+    private DynamicRulePublisher<List<ParamFlowRuleEntity>> rulePublisher;
 
     private boolean checkIfSupported(String app, String ip, int port) {
         try {
@@ -241,6 +248,13 @@ public class ParamFlowRuleController {
 
     private CompletableFuture<Void> publishRules(String app, String ip, Integer port) {
         List<ParamFlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+        //liyong
+        try {
+            rulePublisher.publish(app,rules);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("热点参数规则发布失败:",e);
+        }
         return sentinelApiClient.setParamFlowRuleOfMachine(app, ip, port, rules);
     }
 
