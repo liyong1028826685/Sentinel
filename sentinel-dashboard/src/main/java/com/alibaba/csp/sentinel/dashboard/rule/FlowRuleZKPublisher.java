@@ -41,8 +41,8 @@ public class FlowRuleZKPublisher implements DynamicRulePublisher<List<FlowRuleEn
             return;
         }
         String zookeeper = System.getProperty("csp.sentinel.zookeeper");
-        String groupId = System.getProperty("csp.sentinel.groupId");
-        String dataId = System.getProperty("csp.sentinel.dataId");
+        String groupId = app;
+        String dataId = app + "-flow-rule";
         ZookeeperClient zookeeperClient = new ZookeeperClient(zookeeper,groupId,dataId);
         zookeeperClient.write(converter.convert(rules));
     }

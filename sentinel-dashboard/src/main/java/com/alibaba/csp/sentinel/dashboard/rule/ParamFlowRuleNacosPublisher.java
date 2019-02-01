@@ -42,8 +42,8 @@ public class ParamFlowRuleNacosPublisher implements DynamicRulePublisher<List<Pa
             return;
         }
         String nacos = System.getProperty("csp.sentinel.nacos");
-        String groupId = System.getProperty("csp.sentinel.groupId");
-        String dataId = System.getProperty("csp.sentinel.dataId");
+        String groupId = app;
+        String dataId = app + "-param-flow-rule";
         ConfigService configService = NacosFactory.createConfigService(nacos);
         configService.publishConfig(dataId, groupId, converter.convert(rules));
     }

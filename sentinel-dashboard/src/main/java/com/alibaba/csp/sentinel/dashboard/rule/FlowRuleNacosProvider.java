@@ -37,13 +37,13 @@ public class FlowRuleNacosProvider implements DynamicRuleProvider<List<FlowRuleE
     private Converter<String, List<FlowRuleEntity>> converter;
 
     @Override
-    public List<FlowRuleEntity> getRules(String appName) throws Exception {
+    public List<FlowRuleEntity> getRules(String app) throws Exception {
 
         //Nacos地址
         String nacos = System.getProperty("csp.sentinel.nacos");
         //zookeeper访问path=/${groupId}/${dataId}
-        String groupId = System.getProperty("csp.sentinel.groupId");
-        String dataId = System.getProperty("csp.sentinel.dataId");
+        String groupId = app;
+        String dataId = app + "-flow-rule";
 
         ConfigService configService = NacosFactory.createConfigService(nacos);
 
