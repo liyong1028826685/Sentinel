@@ -41,7 +41,7 @@ public class FlowRuleZKProvider implements DynamicRuleProvider<List<FlowRuleEnti
         String zookeeper = System.getProperty("csp.sentinel.zookeeper");
         //zookeeper访问path=/${groupId}/${dataId}
         String groupId = app;
-        String dataId = app + "-flow-rule";
+        String dataId = app + "-flow-rules";
         ZookeeperClient zookeeperClient = new ZookeeperClient(zookeeper,groupId,dataId);
 
         String rules = zookeeperClient.read();

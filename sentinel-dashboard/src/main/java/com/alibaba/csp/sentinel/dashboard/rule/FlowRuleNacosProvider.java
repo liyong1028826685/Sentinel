@@ -43,7 +43,7 @@ public class FlowRuleNacosProvider implements DynamicRuleProvider<List<FlowRuleE
         String nacos = System.getProperty("csp.sentinel.nacos");
         //zookeeper访问path=/${groupId}/${dataId}
         String groupId = app;
-        String dataId = app + "-flow-rule";
+        String dataId = app + "-flow-rules";
 
         ConfigService configService = NacosFactory.createConfigService(nacos);
 

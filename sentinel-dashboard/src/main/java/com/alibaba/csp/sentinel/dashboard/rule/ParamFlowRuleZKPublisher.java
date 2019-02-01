@@ -41,7 +41,7 @@ public class ParamFlowRuleZKPublisher implements DynamicRulePublisher<List<Param
         }
         String zookeeper = System.getProperty("csp.sentinel.zookeeper");
         String groupId = app;
-        String dataId = app + "-param-flow-rule";
+        String dataId = app + "-param-flow-rules";
         ZookeeperClient zookeeperClient = new ZookeeperClient(zookeeper,groupId,dataId);
         zookeeperClient.write(converter.convert(rules));
     }

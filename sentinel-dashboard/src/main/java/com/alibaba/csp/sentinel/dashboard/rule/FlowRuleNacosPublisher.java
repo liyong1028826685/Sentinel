@@ -43,7 +43,7 @@ public class FlowRuleNacosPublisher implements DynamicRulePublisher<List<FlowRul
         }
         String nacos = System.getProperty("csp.sentinel.nacos");
         String groupId = app;
-        String dataId = app + "-flow-rule";
+        String dataId = app + "-flow-rules";
 
         ConfigService configService = NacosFactory.createConfigService(nacos);
         configService.publishConfig(dataId, groupId, converter.convert(rules));
